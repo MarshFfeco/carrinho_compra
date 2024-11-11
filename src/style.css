@@ -1,0 +1,44 @@
+:root {
+  font-family: "Geist", sans-serif;
+  font-style: normal;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: inherit;
+  color: black;
+}
+
+a:hover {
+  text-underline-offset: 4px;
+  text-decoration: underline;
+}
+
+li {
+  list-style: none;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+#app {
+  max-width: 1800px;
+  margin: auto;
+}
