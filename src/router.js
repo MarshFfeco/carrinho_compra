@@ -1,6 +1,6 @@
 import { createMemoryHistory, createRouter } from 'vue-router'
 
-import Main from "./components/Main.vue"
+import Main from "./pages/Main.vue"
 
 const routes = [
     { path: '/', component: Main },
