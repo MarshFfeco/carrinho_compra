@@ -2,16 +2,102 @@
 import { Splide, SplideSlide } from '@splidejs/vue-splide';
 
 import welcome from '../components/welcome.vue';
+import card from '../components/card.vue';
+import { onMounted, ref, computed } from 'vue';
 
-const opt = {
-    snap: true,
-    type: "loop",
-    perPage: 3,
-    perMove: 3,
-};
+const opt = ref({
+    type : "loop",
+    gap: "20px",
+    focus: "center",
+    perPage: 4,
+    trimSpace: false,
+    pagination: false
+});
 
-const items = [1,2,3,4,5,6,7,8,9]
+const perPage = computed({
+    set(newValue) {
+        opt.value.perPage = newValue;
+    }
+})
 
+onMounted(() => {
+    myEventHandler()
+    window.addEventListener("resize", myEventHandler);
+})
+
+function myEventHandler(e) {
+    const car = document.getElementById("carrousel").clientWidth; 
+
+    if(car < 1100)
+        perPage.value = 1; 
+    else if (car > 1100 && car < 1600)
+        perPage.value = 2;
+    else if (car > 1600)
+        perPage.value = 4;
+}
+
+const items = [
+    {
+        id: 1,
+        title: "Notebook",
+        description: "Um notebook de alta performance.",
+        price: 3500.00
+    },
+    {
+        id: 2,
+        title: "Smartphone",
+        description: "Um smartphone com câmera de alta resolução.",
+        price: 2500.00
+    },
+    {
+        id: 3,
+        title: "Tablet",
+        description: "Um tablet com tela de 10 polegadas.",
+        price: 1500.00
+    },
+    {
+        id: 4,
+        title: "Headphones",
+        description: "Fones de ouvido com cancelamento de ruído.",
+        price: 800.00
+    },
+    {
+        id: 5,
+        title: "Smartwatch",
+        description: "Relógio inteligente com monitoramento de saúde.",
+        price: 1200.00
+    },
+    {
+        id: 6,
+        title: "Camera",
+        description: "Câmera digital com lente intercambiável.",
+        price: 4500.00
+    },
+    {
+        id: 7,
+        title: "Printer",
+        description: "Impressora multifuncional com Wi-Fi.",
+        price: 600.00
+    },
+    {
+        id: 8,
+        title: "Monitor",
+        description: "Monitor de 24 polegadas com resolução 4K.",
+        price: 2000.00
+    },
+    {
+        id: 9,
+        title: "Keyboard",
+        description: "Teclado mecânico com iluminação RGB.",
+        price: 300.00
+    },
+    {
+        id: 10,
+        title: "Mouse",
+        description: "Mouse ergonômico sem fio.",
+        price: 150.00
+    }
+];
 </script>
 
 <template>
@@ -21,101 +107,20 @@ const items = [1,2,3,4,5,6,7,8,9]
         <h2 class="text-2xl">Produtos</h2>
 
         <Splide id="carrousel" :options="opt" aria-label="My Favorite Images">
-            <SplideSlide v-for="item in items">
-                <div class="card">
-                    <div class="card-image">
-                        <picture>
-                            <img src="../assets/image/0.jpg" alt="imagem do produto">
-                        </picture>
-                    </div>
-
-                    <div class="card-tittle">
-                        <h3>
-                            Produto {{item}}
-                        </h3>
-                    </div>
-                
-                    <div class="card-description">
-                        <small>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero repellendus impedit 
-                            ratione dolores sequi nulla!
-                        </small>
-                    </div>
-
-                    <div class="card-footer">
-                        <div class="card-price">
-                            <p><strong>R$ 19,99</strong></p>
-                        </div>
-
-                        <div class="card-button">
-                            <button>
-                                Adicionar
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            <SplideSlide v-for="item in items" :key="opt.perPage+item.id">
+                <card :id="item.id" :title="item.title" :description="item.description" :price="item.price" />
+            </SplideSlide>
+        </Splide>
+    
+        <Splide id="second-carrousel"  :options="opt" aria-label="My Favorite Images">
+            <SplideSlide v-for="item in items" :key="opt.perPage+item.id">
+                <card :id="item.id" :title="item.title" :description="item.description" :price="item.price" />
             </SplideSlide>
         </Splide>
     </section>
 </template>
 
 <style scoped>
-
-.card {
-    width: 336px;
-
-    margin-block: 25px;
-
-    padding: 24px;
-
-    border-radius: 10px;
-
-    background-color: #fff;
-
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
-}
-
-.card-image {
-    padding-bottom: 24px;
-}
-
-.card-image img {
-    width: 288px;
-    height: 240px;
-    
-    object-fit: cover;
-}
-
-.card-tittle {
-    font-size: 1.5rem;
-    line-height: 2rem;
-}
-
-.card-description {
-    padding-bottom: 24px;
-
-    color: rgb(107 114 128 / 1);
-}
-
-.card-description small {
-    overflow: hidden;
-   display: -webkit-box;
-    -webkit-line-clamp: 2; /* number of lines to show */
-           line-clamp: 2; 
-   -webkit-box-orient: vertical;
-}
-
-.card-footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.card-price {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-    font-weight: 700;
-}
-
 #products {
     height: 100vh;
 }
@@ -124,5 +129,13 @@ const items = [1,2,3,4,5,6,7,8,9]
     text-align: center;
 
     padding-top: 10vh;
+}
+
+#products #carrousel {
+    padding-bottom: 24px;
+}
+
+#products #second-carrousel {
+    padding-top: 0;
 }
 </style>
